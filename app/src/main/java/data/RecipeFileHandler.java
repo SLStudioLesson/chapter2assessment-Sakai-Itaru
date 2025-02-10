@@ -1,5 +1,10 @@
 package data;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FilterWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -22,12 +27,16 @@ public class RecipeFileHandler {
      * @return レシピデータ
      */
     public ArrayList<String> readRecipes() {
-        // try {
-
-        // } catch (IOException e) {
-        //     System.out.println("Error reading file:" + e.getMessage());
-        // }
-        return null;
+        ArrayList<String> recipes = new ArrayList<>(); // ファイルから読み込んだものを格納するリスト
+        try (BufferedReader reader = new BufferedReader(new FileReader(this.filePath))){
+            String line;
+            while ((line = reader.readLine()) != null) {
+                recipes.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file:" + e.getMessage());
+        }
+        return recipes;
     }
 
     /**
@@ -38,12 +47,12 @@ public class RecipeFileHandler {
      * @param recipeName レシピ名
      * @param ingredients 材料名
      */
-     // 
     public void addRecipe(String recipeName, String ingredients) {
-        // try {
-
-        // } catch (IOException e) {
-
-        // }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.filePath, true))){
+            writer.write(recipeName + "," + ingredients); // 受け取った引数で書き込み
+            writer.newLine(); // 書き込み後に改行
+        } catch (IOException e) {
+            System.out.println("Error reading file:" + e.getMessage());
+        }
     }
 }
